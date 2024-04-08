@@ -1,0 +1,40 @@
+# docker-compose  --env-file .env  up -d
+version: "3.8"
+name: py_web_13
+services:
+  redis:
+    image: redis:alpine
+    expose:
+      - "${REDIS_PORT}"
+    # ports:
+    #   - "${REDIS_PORT}:${REDIS_PORT}"
+  pg:
+    image: postgres
+    environment:
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    expose:
+      - "${POSTGRES_PORT}"
+    # ports:
+    #   - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - ./.postgres-data:/var/lib/postgresql/data
+
+  code :
+    build: ./
+    image: siracencoserghei/py_web_13:latest
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - ./.env
+    depends_on:
+      - pg
+      - redis
+    healthcheck:
+      test: ["CMD", "curl","-f","-X","GET","http://localhost:${APP_PORT}/api/healthchecker","-H","accept: application/json", "||", "exit", "1" ]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+      start_interval: 15s
