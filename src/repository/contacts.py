@@ -156,7 +156,6 @@ async def update(contact_id: int, body: ContactModel, user_id: int, db: Session)
 async def favorite_update(
     contact_id: int, body: ContactFavoriteModel, user_id: int, db: Session
 ):
-    contact_id: int, body: ContactFavoriteModel, user_id: int, db: Session):
     """
     Update the favorite status of a contact.
 

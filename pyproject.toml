@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "py-web-13"
+name = "py-web-14"
 version = "0.1.0"
 description = ""
 authors = ["Serghei <siracencoserghei@gmail.com>"]
@@ -32,6 +32,8 @@ colorlog = "^6.8.2"
 cloudinary = "^1.39.1"
 poetry-plugin-export = "^1.7.1"
 fastapi-limiter = "^0.1.6"
+mkdocs = "^1.5.3"
+mkdocstrings = "^0.24.3"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.2.6"
