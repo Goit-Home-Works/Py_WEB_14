@@ -36,6 +36,14 @@ logger.addHandler(handler)
 
 # @app.on_event("startup")
 async def startup():
+    """
+    Function to initialize resources on application startup.
+
+    This function initializes FastAPILimiter with a Redis connection.
+
+    Returns:
+    - None
+    """
     r = await redis.Redis(host=settings.redis_host, port=settings.redis_port, db=0)
     await FastAPILimiter.init(r)
     logger.debug("startup done")
@@ -43,6 +51,20 @@ async def startup():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """
+    Async context manager to handle application lifespan events.
+
+    This context manager initializes resources on application startup.
+
+    Parameters:
+    - app (FastAPI): The FastAPI application instance.
+
+    Yields:
+    - None
+
+    Returns:
+    - None
+    """
     logger.debug("lifespan before")
     await startup()
     yield
@@ -72,6 +94,17 @@ templates = Jinja2Templates(directory=templates_path)
 
 @app.get("/", response_class=HTMLResponse)
 async def read_item(request: Request):
+    """
+    Route to render the home page.
+
+    This route renders the index.html template as the home page.
+
+    Parameters:
+    - request (Request): The incoming request object.
+
+    Returns:
+    - HTMLResponse: HTML response containing the rendered template.
+    """
     try:
         context = {"request": request, "title": "Home Page"}
         return templates.TemplateResponse("index.html", context)
@@ -82,6 +115,17 @@ async def read_item(request: Request):
 
 @app.get("/api/healthchecker")
 def healthchecker(db: Session = Depends(get_db)):
+    """
+    Endpoint to check the health of the application.
+
+    This endpoint checks the health of the application by querying the database.
+
+    Parameters:
+    - db (Session): Database session dependency.
+
+    Returns:
+    - dict: A dictionary containing a health message.
+    """
     try:
         # Make request
         result = db.execute(text("SELECT 1")).fetchone()
@@ -102,8 +146,17 @@ app.include_router(contacts.router, prefix="/api")
 app.include_router(auth.router, prefix="/api/auth")
 app.include_router(users.router, prefix="/api")
 
+
 # Function to open the web browser
 def open_browser():
+    """
+    Function to open the web browser automatically.
+
+    This function opens the web browser automatically when the application starts.
+
+    Returns:
+    - None
+    """
     webbrowser.open("http://localhost:9000")
 
 

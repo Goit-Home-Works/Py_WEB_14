@@ -23,7 +23,19 @@ conf = ConnectionConfig(
     TEMPLATE_FOLDER=Path(__file__).parent / "templates",
 )
 
+
 async def send_email(email: EmailStr, username: str, host: str):
+    """
+    Sends an email to the specified recipient for email confirmation.
+
+    Parameters:
+    - email (EmailStr): The email address of the recipient.
+    - username (str): The username of the recipient.
+    - host (str): The host URL where the confirmation link will lead.
+
+    Returns:
+    - dict | None: A dictionary with a success message if the email is sent successfully, otherwise None.
+    """
     try:
         token_verification = auth_service.create_email_token({"sub": email})
         message = MessageSchema(
@@ -44,6 +56,8 @@ async def send_email(email: EmailStr, username: str, host: str):
         logger.error(err)
         return None
     return {"message": "email has been set to sending query"}
+
+
 #
 # ...............................................................
 
@@ -56,10 +70,10 @@ async def send_email(email: EmailStr, username: str, host: str):
 #     try:
 #         token_verification = auth_service.create_email_token({"sub": email})
 #
-#         # file_path = ".templates/confirm_email.html" 
+#         # file_path = ".templates/confirm_email.html"
 #         # print(f"File path: {file_path}")
 #
-#         # with open(file_path, "r") as file:  
+#         # with open(file_path, "r") as file:
 #         #     html_content = file.read()
 #
 #         # Replace placeholders with actual values

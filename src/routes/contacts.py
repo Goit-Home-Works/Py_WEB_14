@@ -1,3 +1,19 @@
+"""
+This module defines the API routes related to managing contacts.
+
+It includes endpoints for searching contacts, retrieving contacts, creating new contacts,
+updating existing contacts, and deleting contacts. Additionally, it provides rate limiting
+functionality for creating new contacts to prevent abuse.
+
+Endpoints:
+- /contacts/search: Search for contacts based on various criteria.
+- /contacts/search/birthdays: Retrieve contacts with upcoming birthdays.
+- /contacts: Retrieve, create, and update contacts.
+- /contacts/{contact_id}: Retrieve, update, or delete a specific contact.
+
+All endpoints require authentication and are rate-limited to prevent abuse.
+"""
+
 from typing import List
 
 from fastapi import Path, Depends, HTTPException, Query, status, APIRouter
@@ -24,7 +40,25 @@ async def search_contacts(
     limit: int = Query(default=10, le=100, ge=10),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> List[ContactResponse]:
+    """
+    Searches for contacts based on the provided criteria.
+
+    Parameters:
+    - first_name (str, optional): The first name of the contact.
+    - last_name (str, optional): The last name of the contact.
+    - email (str, optional): The email address of the contact.
+    - skip (int, optional): Number of records to skip.
+    - limit (int, optional): Maximum number of records to return.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Returns:
+    - List[ContactResponse]: A list of contacts matching the search criteria.
+
+    Raises:
+    - HTTPException: If no contacts are found.
+    """
     contacts = None
     if first_name or last_name or email:
         param = {
@@ -48,7 +82,23 @@ async def search_contacts_birthday(
     limit: int = Query(default=10, le=100, ge=10),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> List[ContactResponse]:
+    """
+    Searches for contacts with birthdays within a specified number of days.
+
+    Parameters:
+    - days (int, optional): Number of days within which to search for birthdays.
+    - skip (int, optional): Number of records to skip.
+    - limit (int, optional): Maximum number of records to return.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Returns:
+    - List[ContactResponse]: A list of contacts with birthdays within the specified days.
+
+    Raises:
+    - HTTPException: If no contacts are found.
+    """
     contacts = None
     if days:
         param = {
@@ -69,7 +119,23 @@ async def get_contacts(
     favorite: bool | None = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> List[ContactResponse]:
+    """
+    Retrieves contacts for the current user.
+
+    Parameters:
+    - skip (int, optional): Number of records to skip.
+    - limit (int, optional): Maximum number of records to return.
+    - favorite (bool, optional): If True, only favorite contacts will be returned.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Returns:
+    - List[ContactResponse]: A list of contacts belonging to the current user.
+
+    Raises:
+    - HTTPException: If no contacts are found.
+    """
     contacts = await repository_contacts.get_contacts(
         db=db, user_id=current_user.id, skip=skip, limit=limit, favorite=favorite  # type: ignore
     )
@@ -81,7 +147,21 @@ async def get_contact(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> ContactResponse:
+    """
+    Retrieves a contact by its ID.
+
+    Parameters:
+    - contact_id (int): The ID of the contact to retrieve.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Returns:
+    - ContactResponse: The contact with the specified ID.
+
+    Raises:
+    - HTTPException: If the contact with the specified ID is not found.
+    """
     contact = await repository_contacts.get_contact_by_id(contact_id, current_user.id, db)  # type: ignore
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
@@ -106,7 +186,21 @@ async def create_contact(
     body: ContactModel,
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> ContactResponse:
+    """
+    Creates a new contact for the current user.
+
+    Parameters:
+    - body (ContactModel): The data representing the new contact.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Returns:
+    - ContactResponse: The newly created contact.
+
+    Raises:
+    - HTTPException: If the email of the new contact already exists or if there's an integrity error.
+    """
     contact = await repository_contacts.get_contact_by_email(body.email, current_user.id, db)
     if contact:
         raise HTTPException(
@@ -127,7 +221,22 @@ async def update_contact(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> ContactResponse:
+    """
+    Updates an existing contact.
+
+    Parameters:
+    - body (ContactModel): The data representing the updated contact.
+    - contact_id (int): The ID of the contact to update.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Returns:
+    - ContactResponse: The updated contact.
+
+    Raises:
+    - HTTPException: If the contact with the specified ID is not found.
+    """
     contact = await repository_contacts.update(contact_id, body, current_user.id, db)  # type: ignore
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
@@ -140,7 +249,22 @@ async def favorite_update(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> ContactResponse:
+    """
+    Updates the favorite status of a contact.
+
+    Parameters:
+    - body (ContactFavoriteModel): The data representing the favorite status update.
+    - contact_id (int): The ID of the contact to update.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Returns:
+    - ContactResponse: The contact with the updated favorite status.
+
+    Raises:
+    - HTTPException: If the contact with the specified ID is not found.
+    """
     contact = await repository_contacts.favorite_update(contact_id, body, current_user.id, db)  # type: ignore
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
@@ -156,7 +280,18 @@ async def remove_contact(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-):
+) -> None:
+    """
+    Removes a contact.
+
+    Parameters:
+    - contact_id (int): The ID of the contact to remove.
+    - db (Session): The database session.
+    - current_user (User): The current authenticated user.
+
+    Raises:
+    - HTTPException: If the contact with the specified ID is not found.
+    """
     contact = await repository_contacts.delete(contact_id, current_user.id, db)  # type: ignore
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")

@@ -13,7 +13,39 @@ from .auth_token import AuthToken
 from repository import users as repository_users
 from schemas.auth import AccessTokenRefreshResponse
 
+
 class Auth(AuthToken):
+    """
+    Class for managing authentication and authorization tokens.
+
+    Parameters:
+    - secret_key (str): The secret key used for encoding and decoding tokens.
+    - algorithm (str, optional): The algorithm used for encoding tokens. Defaults to None.
+    - token_url (str, optional): The URL for token authentication. Defaults to "/api/auth/login".
+
+    Attributes:
+    - auth_scheme (OAuth2PasswordBearer): The OAuth2 authentication scheme.
+    - auth_response_model: The response model for authentication.
+    - token_response_model: The response model for token generation.
+
+    Methods:
+    - create_refresh_token(data: dict[str, Any], expires_delta: Optional[float] = None) -> tuple[str, datetime]:
+        Creates a new refresh token.
+
+    - decode_refresh_token(refresh_token: str) -> str:
+        Decodes the refresh token and retrieves the email associated with it.
+
+    - create_email_token(data: dict, expires_delta: Optional[float] = None) -> str | None:
+        Creates an email token.
+
+    - get_email_from_token(token: str) -> str | None:
+        Retrieves the email from the provided token.
+
+    - refresh_access_token(refresh_token: str) -> dict[str, Any] | None:
+        Refreshes the access token using the provided refresh token.
+
+    """
+
     auth_scheme = None  # OAuth2PasswordBearer(tokenUrl="/api/auth/login")
     auth_response_model = None  # OAuth2PasswordRequestForm
     token_response_model = None  # AccessTokenRefreshResponse
@@ -35,6 +67,16 @@ class Auth(AuthToken):
     def create_refresh_token(
         self, data: dict[str, Any], expires_delta: Optional[float] = None
     ) -> tuple[str, datetime]:
+        """
+        Creates a new refresh token.
+
+        Parameters:
+        - data (dict[str, Any]): The data to be encoded into the token.
+        - expires_delta (Optional[float], optional): The expiration time for the token. Defaults to None.
+
+        Returns:
+        - tuple[str, datetime]: The encoded refresh token and its expiration time.
+        """
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.now(timezone.utc) + timedelta(seconds=expires_delta)
@@ -49,7 +91,17 @@ class Auth(AuthToken):
         )
         return encoded_refresh_token, expire
 
-    def decode_refresh_token(self, refresh_token: str):
+    def decode_refresh_token(self, refresh_token: str) -> str | None:
+        """
+        Decodes the refresh token and retrieves the email associated with it.
+
+        Parameters:
+        - refresh_token (str): The refresh token to decode.
+
+        Returns:
+        - str: The email associated with the refresh token.
+        - None: If the token is invalid or cannot be decoded.
+        """
         try:
             payload = jwt.decode(
                 refresh_token, self.SECRET_KEY, algorithms=[self.ALGORITHM]
@@ -70,6 +122,17 @@ class Auth(AuthToken):
     def create_email_token(
         self, data: dict, expires_delta: Optional[float] = None
     ) -> str | None:
+        """
+        Creates an email token.
+
+        Parameters:
+        - data (dict): The data to be encoded into the token.
+        - expires_delta (Optional[float], optional): The expiration time for the token. Defaults to None.
+
+        Returns:
+        - str | None: The encoded email token.
+        """
+
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.now(timezone.utc) + timedelta(seconds=expires_delta)
@@ -83,6 +146,15 @@ class Auth(AuthToken):
         return encoded_token
 
     def get_email_from_token(self, token: str) -> str | None:
+        """
+        Retrieves the email from the provided token.
+
+        Parameters:
+        - token (str): The token from which to retrieve the email.
+
+        Returns:
+        - str | None: The email retrieved from the token.
+        """
         try:
             payload = jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
             if payload and payload["scope"] == "email_token":
@@ -99,6 +171,15 @@ class Auth(AuthToken):
             )
 
     def refresh_access_token(self, refresh_token: str) -> dict[str, Any] | None:
+        """
+        Refreshes the access token using the provided refresh token.
+
+        Parameters:
+        - refresh_token (str): The refresh token to use for refreshing the access token.
+
+        Returns:
+        - dict[str, Any] | None: The new access token along with its expiration time.
+        """
         if refresh_token:
             email = self.decode_refresh_token(refresh_token)
             if email:
