@@ -5,41 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43594337-6c31-46e8-ada3-8de9d2409788" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic.ini" beforeDir="false" afterPath="$PROJECT_DIR$/alembic.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic/README" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic/script.py.mako" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/script.py.mako" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic/versions/231732f1db85_confirmed_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/231732f1db85_confirmed_email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic/versions/428fa062fe1f_confirmed_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/428fa062fe1f_confirmed_email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic/versions/aea8155ccc3e_update_models_to_match_database.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/aea8155ccc3e_update_models_to_match_database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/alembic/versions/f539b13855fd_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/f539b13855fd_init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/contacts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/contacts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/contacts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/contacts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/schemas/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/contact.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/schemas/email.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/auth_token.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth_token.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/cloudinary.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/cloudinary.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/emails.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/emails.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/client/css/signin.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/client/css/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/client/js/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/client/js/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/favicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
