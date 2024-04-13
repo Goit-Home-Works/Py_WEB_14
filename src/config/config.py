@@ -6,7 +6,6 @@ from pydantic_settings import BaseSettings
 BASE_PATH = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_PATH.joinpath(".env"))
 APP_ENV = environ.get("APP_ENV")
-print(f"{BASE_PATH=}")
 print(f"{APP_ENV=}")
 
 # Debugging: Print the values of the environment variables
