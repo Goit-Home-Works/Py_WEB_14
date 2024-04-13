@@ -118,6 +118,12 @@ app.mount(
         app=StaticFilesCache(directory=static_files_path, cachecontrol="private, max-age=3600"),
         name="static",
     )
+app.mount(
+    path="/sphinx",
+    app=StaticFilesCache(directory=settings.SPHINX_DIRECTORY, html=True),
+    name="sphinx",
+)
+print(f"{settings.SPHINX_DIRECTORY=}")
 
 templates_path = os.path.join(os.path.dirname(__file__), "templates")
 if not templates_path:

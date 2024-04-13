@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     cloudinary_api_secret: str = "some_secret"
     reate_limiter_times: int = 2
     reate_limiter_seconds: int = 5
-    SPHINX_DIRECTORY: str = str(BASE_PATH_PROJECT.joinpath("docs", "_build", "html"))
+    SPHINX_DIRECTORY: str = str(BASE_PATH.joinpath("docs", "_build", "html"))
     STATIC_DIRECTORY: str = str(BASE_PATH_PROJECT.joinpath("static"))
 
     sendgrid_api_key: str = ""
