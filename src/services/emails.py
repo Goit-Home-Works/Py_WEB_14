@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 
 from config.config import settings
@@ -9,7 +9,8 @@ from services.auth import auth_service
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")
 
-conf = ConnectionConfig(
+
+config = ConnectionConfig(
     MAIL_USERNAME=settings.mail_username,
     MAIL_PASSWORD=settings.mail_password,
     MAIL_FROM=settings.mail_from,
@@ -23,18 +24,29 @@ conf = ConnectionConfig(
     TEMPLATE_FOLDER=Path(__file__).parent / "templates",
 )
 
+class EmailSchema(BaseModel):
+    """Class EmailSchema
 
-async def send_email(email: EmailStr, username: str, host: str):
+    :param BaseModel: _description_
+    :type BaseModel: _type_
     """
-    Sends an email to the specified recipient for email confirmation.
 
-    Parameters:
-    - email (EmailStr): The email address of the recipient.
-    - username (str): The username of the recipient.
-    - host (str): The host URL where the confirmation link will lead.
+    email: EmailStr
+    fullname: str = "Sender Name"
+    subject: str = "Sender Subject topic"
 
-    Returns:
-    - dict | None: A dictionary with a success message if the email is sent successfully, otherwise None.
+
+async def send_email(email: str, username: str, host: str):
+    """Service email send_email
+
+    :param email: _description_
+    :type email: str
+    :param username: _description_
+    :type username: str
+    :param host: _description_
+    :type host: str
+    :return: _description_
+    :rtype: _type_
     """
     try:
         token_verification = auth_service.create_email_token({"sub": email})
@@ -50,7 +62,7 @@ async def send_email(email: EmailStr, username: str, host: str):
         )
         logger.debug(message)
 
-        fm = FastMail(conf)
+        fm = FastMail(config)
         await fm.send_message(message, template_name="confirm_email.html")
     except ConnectionError as err:
         logger.error(err)

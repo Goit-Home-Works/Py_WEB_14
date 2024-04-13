@@ -23,7 +23,7 @@ services:
 
   code :
     build: ./
-    image: siracencoserghei/py_web_13:latest
+    image: siracencoserghei/py_web_14:latest
     ports:
       - "${APP_PORT}:${APP_PORT}"
     env_file:

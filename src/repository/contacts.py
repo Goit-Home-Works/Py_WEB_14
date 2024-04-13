@@ -1,123 +1,88 @@
-"""
-This module contains functions and methods related to managing contacts in the database.
-
-Functions:
-- get_contacts: Asynchronously retrieves contacts based on user ID, skip, and limit.
-- get_contact_by_id: Asynchronously retrieves a contact by its ID and user ID.
-- get_contact_by_email: Asynchronously retrieves a contact by its email and user ID.
-- create: Asynchronously creates a new contact in the database.
-- update: Asynchronously updates an existing contact in the database.
-- favorite_update: Asynchronously updates the favorite status of a contact in the database.
-- delete: Asynchronously deletes a contact from the database.
-- search_contacts: Asynchronously searches for contacts based on various parameters.
-- date_replace_year: Replaces the year of a date with a new year, handling exceptions.
-- search_birthday: Asynchronously searches for contacts with upcoming birthdays within a specified range.
-
-Parameters:
-- db (Session): The SQLAlchemy database session.
-- user_id (int): The ID of the user associated with the contacts.
-- body (ContactModel or ContactFavoriteModel): The request body containing contact information.
-- contact_id (int): The ID of the contact.
-- email (str): The email of the contact.
-- param (dict): Dictionary containing search parameters.
-- d (date): The date object to be modified.
-- year (int): The new year to replace in the date.
-- days (int): The number of days within which to search for upcoming birthdays.
-- date_now (date): The current date.
-- date_now_year (int): The year component of the current date.
-- date_now_month (int): The month component of the current date.
-- date_last_month (int): The month component of the date after the specified number of days.
-- list_month (List[int]): List of months to search for upcoming birthdays.
-- contacts (List[Contact]): List of contacts retrieved from the database.
-- query (sqlalchemy.sql.selectable.Select): SQL query for retrieving contacts.
-- contacts_q (List[Contact]): List of contacts returned by the query.
-- birthday (date): The birthday of a contact.
-- bd (date): Modified birthday with the current year.
-- diff_bd (timedelta): Difference between the modified birthday and the current date.
-- skip (int): Number of contacts to skip in the results.
-- limit (int): Maximum number of contacts to return in the results.
-"""
-
 from datetime import date, timedelta
 import logging
 from typing import List
+from sqlalchemy import select, text, extract, desc
 
-import sqlalchemy
 from sqlalchemy.orm import Session
 
-from config.config import settings
-from schemas.contact import ContactModel, ContactFavoriteModel
-from db.models import Contact
 
+from config.config import settings
+from schemas.contact import ContactFavoriteModel, ContactModel
+from db.models import Contact
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")
 
+
 async def get_contacts(
     db: Session, user_id: int, skip: int, limit: int, favorite: bool | None = None
-):
+) -> List[Contact]:
     """
-    Asynchronously retrieves contacts based on user ID, skip, and limit.
+    Retrieves a list of contacts for a specific user with specified pagination parameters.
 
-    Args:
-    - db (Session): The SQLAlchemy database session.
-    - user_id (int): The ID of the user.
-    - skip (int): Number of contacts to skip.
-    - limit (int): Maximum number of contacts to return.
-    - favorite (bool | None, optional): Filter contacts by favorite status. Defaults to None.
-
-    Returns:
-    - List[Contact]: List of contacts.
+    :param db: The database session.
+    :type db: Session
+    :param user_id: The user_id to retrieve contacts for.
+    :type user_id: int
+    :param skip: The number of contacts to skip.
+    :type skip: int
+    :param limit: The maximum number of contacts to return.
+    :type limit: int
+    :param favorite: The favorite flag of contact, defaults to None.
+    :type favorite: bool | None, optional
+    :return: A list of contacts.
+    :rtype: List[Contact]
     """
     query = db.query(Contact).filter_by(user_id=user_id)
     if favorite is not None:
-        query = query.filter_by(user_id=user_id)
+        query = query.filter_by(favorite=favorite)
     contacts = query.offset(skip).limit(limit).all()
+    # contacts = db.query(Contact).filter_by(user_id = user_id).offset(skip).limit(limit).all()
     return contacts
 
 
-async def get_contact_by_id(contact_id: int, user_id: int, db: Session):
-    """
-    Asynchronously retrieves a contact by its ID and user ID.
+async def get_contact_by_id(contact_id: int, user_id: int, db: Session) -> Contact:
+    """Retrieves a single contact with the specified ID for a specific ID of user.
 
-    Args:
-    - contact_id (int): The ID of the contact.
-    - user_id (int): The ID of the user.
-    - db (Session): The SQLAlchemy database session.
-
-    Returns:
-    - Contact | None: The retrieved contact, or None if not found.
+    :param contact_id: The ID of the contact to retrieve.
+    :type contact_id: int
+    :param user_id: The user ID to retrieve the contact for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: Specified contact for specific user.
+    :rtype: Contact
     """
     contact = db.query(Contact).filter_by(id=contact_id, user_id=user_id).first()
     return contact
 
 
-async def get_contact_by_email(email: str, user_id: int, db: Session):
-    """
-    Retrieve a contact by email and user_id.
+async def get_contact_by_email(email: str, user_id: int, db: Session) -> Contact:
+    """Retrieves a single contact with the specified email for a specific ID of user.
 
-    Parameters:
-    email (str): The email of the contact.
-    user_id (int): The id of the user.
-    db (Session): The database session.
-
-    Returns:
-    Contact: The contact object.
+    :param email: The email of the contact to retrieve.
+    :type email: str
+    :param user_id: The user ID to retrieve the contact for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: Specified contact for specific user.
+    :rtype: Contact
     """
     contact = db.query(Contact).filter_by(email=email, user_id=user_id).first()
     return contact
 
 
-async def create(body: ContactModel, user_id: int, db: Session):
-    """
-    Create a new contact.
+async def create(body: ContactModel, user_id: int, db: Session) -> Contact:
+    """Creates a new concact for a specific user.
 
-    Parameters:
-    body (ContactModel): The contact data.
-    user_id (int): The id of the user.
-    db (Session): The database session.
-
-    Returns:
-    Contact: The created contact object.
+    :param body: The data for the concact to create.
+    :type body: ContactModel
+    :param user_id: The user ID to create the note for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: The newly created contact.
+    :rtype: Contact
     """
     contact = Contact(**body.model_dump())
     contact.user_id = user_id
@@ -127,18 +92,19 @@ async def create(body: ContactModel, user_id: int, db: Session):
     return contact
 
 
-async def update(contact_id: int, body: ContactModel, user_id: int, db: Session):
-    """
-    Update an existing contact.
+async def update(contact_id: int, body: ContactModel, user_id: int, db: Session) -> Contact | None:
+    """Updates a single contact with the specified ID for a specific user ID.
 
-    Parameters:
-    contact_id (int): The id of the contact.
-    body (ContactModel): The updated contact data.
-    user_id (int): The id of the user.
-    db (Session): The database session.
-
-    Returns:
-    Contact: The updated contact object.
+    :param contact_id: The ID of the contact to update.
+    :type contact_id: int
+    :param body: The updated data for the contact.
+    :type body: ContactModel
+    :param user_id: The user ID to update the contact for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: The updated contact, or None if it does not exist.
+    :rtype: Contact | None
     """
     contact = await get_contact_by_id(contact_id, user_id, db)
     if contact:
@@ -153,20 +119,19 @@ async def update(contact_id: int, body: ContactModel, user_id: int, db: Session)
     return contact
 
 
-async def favorite_update(
-    contact_id: int, body: ContactFavoriteModel, user_id: int, db: Session
-):
-    """
-    Update the favorite status of a contact.
+async def favorite_update(contact_id: int, body: ContactFavoriteModel, user_id: int, db: Session) -> Contact | None:
+    """Updates favorute status (i.e. "true" or "false") of contact with the specified ID for a specific user ID.
 
-    Parameters:
-    contact_id (int): The id of the contact.
-    body (ContactFavoriteModel): The updated favorite status.
-    user_id (int): The id of the user.
-    db (Session): The database session.
-
-    Returns:
-    Contact: The updated contact object.
+    :param contact_id: The ID of the contact to update.
+    :type contact_id: int
+    :param body: The updated data with favorite status for the contact.
+    :type body: ContactFavoriteModel
+    :param user_id: The user ID to update the contact for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: The updated contact, or None if it does not exist.
+    :rtype: Contact | None
     """
     contact = await get_contact_by_id(contact_id, user_id, db)
     if contact:
@@ -175,17 +140,17 @@ async def favorite_update(
     return contact
 
 
-async def delete(contact_id: int, user_id: int, db: Session):
-    """
-    Delete a contact.
+async def delete(contact_id: int, user_id: int, db: Session) -> Contact | None:
+    """Removes a single contact with the specified ID for a specific user ID.
 
-    Parameters:
-    contact_id (int): The id of the contact.
-    user_id (int): The id of the user.
-    db (Session): The database session.
-
-    Returns:
-    Contact: The deleted contact object.
+    :param contact_id: The ID of the contact to remove.
+    :type contact_id: int
+    :param user_id: The user ID to remove the contact for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: The removed contact, or None if it does not exist.
+    :rtype: Contact | None
     """
     contact = await get_contact_by_id(contact_id, user_id, db)
     if contact:
@@ -194,17 +159,24 @@ async def delete(contact_id: int, user_id: int, db: Session):
     return contact
 
 
-async def search_contacts(param: dict, user_id: int, db: Session):
-    """
-    Search for contacts based on parameters.
+async def search_contacts(param: dict, user_id: int, db: Session) -> List[Contact]:
+    """Retrieves a list of contacts for a specific user with specified search and pagination parameters.
 
-    Parameters:
-    param (dict): The search parameters.
-    user_id (int): The id of the user.
-    db (Session): The database session.
+    :param param: This is dictionary of parameters for search contacts. Dictionary keys:
 
-    Returns:
-    List[Contact]: A list of contact objects that match the search criteria.
+        - first_name - (optional) First name of contact
+        - last_name - (optional) Last name of contact
+        - email - (optional) email of contact
+        - skip - The number of contacts to skip
+        - limit - The maximum number of contacts to return
+
+    :type param: dict{"first_name": str, "last_name": str, "email": str, "skip": int, "limit": int}
+    :param user_id: The user ID to search the contact for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: A list of contacts.
+    :rtype: List[Contact]
     """
     query = db.query(Contact).filter_by(user_id=user_id)
     first_name = param.get("first_name")
@@ -221,22 +193,22 @@ async def search_contacts(param: dict, user_id: int, db: Session):
 
 
 def date_replace_year(d: date, year: int) -> date:
-    """
-    Replace the year of a date, handling the case where the day does not exist in the new year.
+    """Function for replacing the year in the date, if the date is not in the year to be replaced,
+    then we get the next day for this date in this year.
 
-    Parameters:
-    d (date): The date to modify.
-    year (int): The new year.
-
-    Returns:
-    date: The modified date.
+    :param d: Source date
+    :type d: date
+    :param year: Year to replace in date
+    :type year: int
+    :return: Date with the year replaced
+    :rtype: date
     """
     try:
-        d = d.replace(year=year)
+        d = d.replace(year=year)  # 29.02.1988
     except ValueError as err:
         logger.debug(f"date_replace_year b:  {d}")
-        d = d + timedelta(days=1)
-        d = d.replace(year=year)
+        d = d + timedelta(days=1)  # 29.02.1988 -> 01.03.1988
+        d = d.replace(year=year)  # 01.03.1988 -> 01.03.2023
         logger.debug(f"date_replace_year a:  {d}")
     return d
 
@@ -246,18 +218,28 @@ def date_replace_year(d: date, year: int) -> date:
 
 async def search_birthday(param: dict, user_id: int, db: Session) -> List[Contact]:
     """
-    Search for contacts whose birthday is within a certain number of days.
+    Retrieves a list of contacts for a specific user with the specified birthday search parameters
+    for the next few days and pagination parameters.
 
-    Parameters:
-    param (dict): The search parameters.
-    user_id (int): The id of the user.
-    db (Session): The database session.
+    :param param: This is dictionary of parameters for search contacts. Dictionary keys:
 
-    Returns:
-    List[Contact]: A list of contact objects whose birthday is within the specified number of days.
+        - days - Search for contacts whose birthdays are within the next number of days from the current date, defaults to 7
+        - skip - The number of contacts to skip
+        - limit - The maximum number of contacts to return
+
+    :type param: dict{'days': int, 'skip': int, 'limit': int}
+    :param user_id: The user ID to search the contact for.
+    :type user_id: int
+    :param db: The database session.
+    :type db: Session
+    :return: A list of contacts.
+    :rtype: List[Contact]
     """
     days: int = int(param.get("days", 7)) + 1
-    date_now = date.today()
+    # days = 67
+    date_now = param.get("fixed_now",  date.today())
+    # date_now = date.today()
+    # date_now = date(2023, 2, 25)
     date_now_year = date_now.year
     date_now_month = date_now.month
     date_last_month = (date_now + timedelta(days=days + 1)).month
@@ -270,9 +252,9 @@ async def search_birthday(param: dict, user_id: int, db: Session) -> List[Contac
 
     contacts = []
     query = (
-        sqlalchemy.select(Contact)
-        .where(Contact.user_id == user_id, sqlalchemy.extract("MONTH", Contact.birthday).in_(list_month))  # type: ignore
-        .order_by(sqlalchemy.desc(Contact.birthday))  # type: ignore
+        select(Contact)
+        .where(Contact.user_id == user_id, extract("MONTH", Contact.birthday).in_(list_month))  # type: ignore
+        .order_by(desc(Contact.birthday))  # type: ignore
     )
     contacts_q = db.execute(query).scalars()
     for contact in contacts_q:

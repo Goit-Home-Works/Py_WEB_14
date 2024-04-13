@@ -1,5 +1,4 @@
 
-Copy code
 """
 This module defines a Pydantic model for representing an email schema.
 

@@ -11,7 +11,7 @@ Models:
 
 from datetime import datetime
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 
 
 from db.models import Role
@@ -62,8 +62,10 @@ class UserResponse(BaseModel):
     avatar: str | None
     role: Role
 
-    class Config:
-        from_attributes = True
+    # class Config:
+    #     from_attributes = True
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserDetailResponse(BaseModel):

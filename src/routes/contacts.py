@@ -1,32 +1,17 @@
-"""
-This module defines the API routes related to managing contacts.
-
-It includes endpoints for searching contacts, retrieving contacts, creating new contacts,
-updating existing contacts, and deleting contacts. Additionally, it provides rate limiting
-functionality for creating new contacts to prevent abuse.
-
-Endpoints:
-- /contacts/search: Search for contacts based on various criteria.
-- /contacts/search/birthdays: Retrieve contacts with upcoming birthdays.
-- /contacts: Retrieve, create, and update contacts.
-- /contacts/{contact_id}: Retrieve, update, or delete a specific contact.
-
-All endpoints require authentication and are rate-limited to prevent abuse.
-"""
-
 from typing import List
 
 from fastapi import Path, Depends, HTTPException, Query, status, APIRouter
+from fastapi_limiter.depends import RateLimiter
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from fastapi_limiter.depends import RateLimiter
 
+from config.config import settings
 from db.database import get_db
+from db.models import User
 from schemas.contact import ContactFavoriteModel, ContactModel, ContactResponse
 from repository import contacts as repository_contacts
-from db.models import User
 from routes import auth
-from config.config import settings
+
 
 router = APIRouter(prefix="/contacts", tags=["contacts"])
 
@@ -40,24 +25,26 @@ async def search_contacts(
     limit: int = Query(default=10, le=100, ge=10),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> List[ContactResponse]:
-    """
-    Searches for contacts based on the provided criteria.
+):
+    """Route of search contacts
 
-    Parameters:
-    - first_name (str, optional): The first name of the contact.
-    - last_name (str, optional): The last name of the contact.
-    - email (str, optional): The email address of the contact.
-    - skip (int, optional): Number of records to skip.
-    - limit (int, optional): Maximum number of records to return.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Returns:
-    - List[ContactResponse]: A list of contacts matching the search criteria.
-
-    Raises:
-    - HTTPException: If no contacts are found.
+    :param first_name: _description_, defaults to None
+    :type first_name: str | None, optional
+    :param last_name: _description_, defaults to None
+    :type last_name: str | None, optional
+    :param email: _description_, defaults to None
+    :type email: str | None, optional
+    :param skip: _description_, defaults to 0
+    :type skip: int, optional
+    :param limit: _description_, defaults to Query(default=10, le=100, ge=10)
+    :type limit: int, optional
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :raises HTTPException: _description_
+    :return: _description_
+    :rtype: _type_
     """
     contacts = None
     if first_name or last_name or email:
@@ -82,22 +69,22 @@ async def search_contacts_birthday(
     limit: int = Query(default=10, le=100, ge=10),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> List[ContactResponse]:
-    """
-    Searches for contacts with birthdays within a specified number of days.
+):
+    """Route of search_contacts_birthday
 
-    Parameters:
-    - days (int, optional): Number of days within which to search for birthdays.
-    - skip (int, optional): Number of records to skip.
-    - limit (int, optional): Maximum number of records to return.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Returns:
-    - List[ContactResponse]: A list of contacts with birthdays within the specified days.
-
-    Raises:
-    - HTTPException: If no contacts are found.
+    :param days: _description_, defaults to Query(default=7, le=30, ge=1)
+    :type days: int, optional
+    :param skip: _description_, defaults to 0
+    :type skip: int, optional
+    :param limit: _description_, defaults to Query(default=10, le=100, ge=10)
+    :type limit: int, optional
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :raises HTTPException: _description_
+    :return: _description_
+    :rtype: _type_
     """
     contacts = None
     if days:
@@ -119,22 +106,21 @@ async def get_contacts(
     favorite: bool | None = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> List[ContactResponse]:
-    """
-    Retrieves contacts for the current user.
+):
+    """Route get_contacts
 
-    Parameters:
-    - skip (int, optional): Number of records to skip.
-    - limit (int, optional): Maximum number of records to return.
-    - favorite (bool, optional): If True, only favorite contacts will be returned.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Returns:
-    - List[ContactResponse]: A list of contacts belonging to the current user.
-
-    Raises:
-    - HTTPException: If no contacts are found.
+    :param skip: _description_, defaults to 0
+    :type skip: int, optional
+    :param limit: _description_, defaults to Query(default=10, le=100, ge=10)
+    :type limit: int, optional
+    :param favorite: _description_, defaults to None
+    :type favorite: bool | None, optional
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :return: _description_
+    :rtype: _type_
     """
     contacts = await repository_contacts.get_contacts(
         db=db, user_id=current_user.id, skip=skip, limit=limit, favorite=favorite  # type: ignore
@@ -147,20 +133,18 @@ async def get_contact(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> ContactResponse:
-    """
-    Retrieves a contact by its ID.
+):
+    """Route get_contact
 
-    Parameters:
-    - contact_id (int): The ID of the contact to retrieve.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Returns:
-    - ContactResponse: The contact with the specified ID.
-
-    Raises:
-    - HTTPException: If the contact with the specified ID is not found.
+    :param contact_id: _description_, defaults to Path(ge=1)
+    :type contact_id: int, optional
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :raises HTTPException: _description_
+    :return: _description_
+    :rtype: _type_
     """
     contact = await repository_contacts.get_contact_by_id(contact_id, current_user.id, db)  # type: ignore
     if contact is None:
@@ -172,42 +156,34 @@ async def get_contact(
     "",
     response_model=ContactResponse,
     status_code=status.HTTP_201_CREATED,
-    description=f"No more than  {settings.create_limiter_times} requests per {settings.create_limiter_seconds} seconds",
-    dependencies=[
-        Depends(
-            RateLimiter(
-                times=settings.create_limiter_times,
-                seconds=settings.create_limiter_seconds,
-            )
-        )
-    ],
+    description=f"No more than  {settings.reate_limiter_times} requests per {settings.reate_limiter_seconds} seconds",
+    # dependencies=[Depends(RateLimiter(times=settings.reate_limiter_times, seconds=settings.reate_limiter_seconds))],
 )
 async def create_contact(
     body: ContactModel,
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> ContactResponse:
+):
+    """Route create_contact
+
+    :param body: _description_
+    :type body: ContactModel
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :raises HTTPException: _description_
+    :raises HTTPException: _description_
+    :return: _description_
+    :rtype: _type_
     """
-    Creates a new contact for the current user.
-
-    Parameters:
-    - body (ContactModel): The data representing the new contact.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Returns:
-    - ContactResponse: The newly created contact.
-
-    Raises:
-    - HTTPException: If the email of the new contact already exists or if there's an integrity error.
-    """
-    contact = await repository_contacts.get_contact_by_email(body.email, current_user.id, db)
+    contact = await repository_contacts.get_contact_by_email(body.email, current_user.id, db)  # type: ignore
     if contact:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail=f"Email is exist!"
         )
     try:
-        contact = await repository_contacts.create(body, current_user.id, db)
+        contact = await repository_contacts.create(body, current_user.id, db)  # type: ignore
     except IntegrityError as err:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Error: {err}"
@@ -221,21 +197,20 @@ async def update_contact(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> ContactResponse:
-    """
-    Updates an existing contact.
+):
+    """Route update_contact
 
-    Parameters:
-    - body (ContactModel): The data representing the updated contact.
-    - contact_id (int): The ID of the contact to update.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Returns:
-    - ContactResponse: The updated contact.
-
-    Raises:
-    - HTTPException: If the contact with the specified ID is not found.
+    :param body: _description_
+    :type body: ContactModel
+    :param contact_id: _description_, defaults to Path(ge=1)
+    :type contact_id: int, optional
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :raises HTTPException: _description_
+    :return: _description_
+    :rtype: _type_
     """
     contact = await repository_contacts.update(contact_id, body, current_user.id, db)  # type: ignore
     if contact is None:
@@ -249,21 +224,20 @@ async def favorite_update(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> ContactResponse:
-    """
-    Updates the favorite status of a contact.
+):
+    """Route favorite_update
 
-    Parameters:
-    - body (ContactFavoriteModel): The data representing the favorite status update.
-    - contact_id (int): The ID of the contact to update.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Returns:
-    - ContactResponse: The contact with the updated favorite status.
-
-    Raises:
-    - HTTPException: If the contact with the specified ID is not found.
+    :param body: _description_
+    :type body: ContactFavoriteModel
+    :param contact_id: _description_, defaults to Path(ge=1)
+    :type contact_id: int, optional
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :raises HTTPException: _description_
+    :return: _description_
+    :rtype: _type_
     """
     contact = await repository_contacts.favorite_update(contact_id, body, current_user.id, db)  # type: ignore
     if contact is None:
@@ -280,17 +254,18 @@ async def remove_contact(
     contact_id: int = Path(ge=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth.get_current_user),
-) -> None:
-    """
-    Removes a contact.
+):
+    """Route remove_contact
 
-    Parameters:
-    - contact_id (int): The ID of the contact to remove.
-    - db (Session): The database session.
-    - current_user (User): The current authenticated user.
-
-    Raises:
-    - HTTPException: If the contact with the specified ID is not found.
+    :param contact_id: _description_, defaults to Path(ge=1)
+    :type contact_id: int, optional
+    :param db: _description_, defaults to Depends(get_db)
+    :type db: Session, optional
+    :param current_user: _description_, defaults to Depends(auth.get_current_user)
+    :type current_user: User, optional
+    :raises HTTPException: _description_
+    :return: _description_
+    :rtype: _type_
     """
     contact = await repository_contacts.delete(contact_id, current_user.id, db)  # type: ignore
     if contact is None:
