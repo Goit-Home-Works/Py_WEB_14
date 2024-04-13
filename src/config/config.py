@@ -1,6 +1,6 @@
 from os import environ
 from pathlib import Path
-
+from typing import Dict
 from dotenv import load_dotenv
 from pydantic import ConfigDict, BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
