@@ -65,17 +65,6 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-settings=Settings(
-    app_mode='dev',
-    app_version='hw',
-    app_name='contacts',
-    app_host='0.0.0.0',
-    app_port=9000,
-    token_secret_key='mysecret123',
-    token_algorithm='HS256',
-    mail_username='vicky23@meta.ua',
-    mail_password='Testfastaoi23',
-    mail_from='vicky23@meta.ua', mail_port=465, mail_server='smtp.meta.ua', mail_from_name='TODO System', redis_host='localhost', redis_port=6379, redis_password='', cloudinary_name='ddgxvfauw', cloudinary_api_key='898426416919869', cloudinary_api_secret='_uYEk-__x07JTk8JJgHW7hZoOrQ', reate_limiter_times=2, reate_limiter_seconds=5, SPHINX_DIRECTORY='/home/sergio/Desktop/Py_WEB_14/src/docs/_build/html', STATIC_DIRECTORY='/home/sergio/Desktop/Py_WEB_14/src/static', sendgrid_api_key='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')
 
 
 if __name__ == "__main__":
