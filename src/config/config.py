@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     app_name: str = "contacts"
     app_host: str = "0.0.0.0"
     app_port: int = 9000
-    # sqlalchemy_database_url: str | None = None
+    sqlalchemy_database_url: str = ""
     token_secret_key: str = "some_SuPeR_key"
     token_algorithm: str = "HS256"
     mail_username: str = "user@example.com"
@@ -53,6 +53,10 @@ class Settings(BaseSettings):
     STATIC_DIRECTORY: str = str(BASE_PATH_PROJECT.joinpath("static"))
 
     sendgrid_api_key: str = ""
+
+    @classmethod
+    def from_dict(cls, settings_dict: Dict) -> "Settings":
+        return cls(**settings_dict)
 
     class Config:
         extra = "ignore"

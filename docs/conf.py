@@ -14,7 +14,11 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
-
+# Set the absolute paths for docs and src directories
+docs_path = os.path.abspath('./')
+src_path = os.path.abspath('../src')
+print(f"{docs_path=} {src_path=}")
+sys.path.insert(0, os.path.abspath('../src'))
 # -- Project information -----------------------------------------------------
 
 project = 'Rest API'

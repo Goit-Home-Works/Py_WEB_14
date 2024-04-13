@@ -77,7 +77,7 @@ REST API service Auth
 
 
 REST API service Auth_Token
-=========================
+=============================
 .. automodule:: src.services.auth_token
   :members:
   :undoc-members:
