@@ -3,13 +3,13 @@ from fastapi import APIRouter, Depends, status, UploadFile, File
 from sqlalchemy.orm import Session
 
 
-from db.database import get_db, get_redis
-from db.models import User
-from repository import users as repository_users
-from routes.auth import get_current_user
-from config.config import settings
-from schemas.user import UserResponse
-from services.cloudinary import Cloudinary
+from src.db.database import get_db, get_redis
+from src.db.models import User
+from src.repository import users as repository_users
+from src.routes.auth import get_current_user
+from src.config.config import settings
+from src.schemas.user import UserResponse
+from src.services.cloudinary import Cloudinary
 
 router = APIRouter(prefix="/users", tags=["users"])
 

@@ -6,9 +6,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 
 
-from config.config import settings
+from src.config.config import settings
 from .auth_token import AuthToken
-from schemas.auth import AccessTokenRefreshResponse
+from src.schemas.auth import AccessTokenRefreshResponse
 
 
 class Auth(AuthToken):

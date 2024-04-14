@@ -22,10 +22,10 @@ import uvicorn
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from config.config import settings
-from db.database import get_db, get_redis, redis_pool
-from db import database
-from routes import contacts, auth, users
+from src.config.config import settings
+from src.db.database import get_db, get_redis, redis_pool
+from src.db import database
+from src.routes import contacts, auth, users
 
 logger = logging.getLogger(f"{settings.app_name}")
 logger.setLevel(logging.DEBUG if settings.app_mode == "dev" else logging.INFO)

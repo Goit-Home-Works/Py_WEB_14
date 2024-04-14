@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from pydantic import BaseModel, ConfigDict, Field, EmailStr
 
-# from db.models import User
+# from src.db.models import User
 from .user import UserResponse
 
 
@@ -52,10 +52,10 @@ class ContactResponse(BaseModel):
     updated_at: datetime
     user: UserResponse
 
-    # class Config:
-    #     from_attributes = True
+    class Config(ConfigDict):
+        from_attributes = True
 
-    model_config = ConfigDict(from_attributes=True)
+    # model_config = ConfigDict(from_attributes=True)
 
     # email: str = Field(default="email@examole.com", pattern=r'^\w+@\w+\.\w+$')
 

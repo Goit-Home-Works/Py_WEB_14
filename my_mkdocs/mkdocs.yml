@@ -1,0 +1,30 @@
+
+### `mkdocs.yml`:
+
+site_name: REST API Documentation
+nav:
+  - Home: index.md
+  - Hello: hello.md
+theme:
+  name: readthedocs
+  palette:
+    primary: 'blue'
+    accent: 'light blue'
+  font:
+    text: 'Roboto'
+markdown_extensions:
+  - admonition
+  - codehilite
+  - extra
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+plugins:
+- mkdocstrings:
+    handlers:
+      custom_handler:
+        handler_config_option: yes
+        options:
+          some_config_option: "a"
+          other_config_option: 0

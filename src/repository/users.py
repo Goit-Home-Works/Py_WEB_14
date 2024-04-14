@@ -4,9 +4,9 @@ from libgravatar import Gravatar
 from sqlalchemy.orm import Session
 import redis.asyncio as redis
 
-from config.config import settings
-from schemas.user import UserModel
-from db.models import User
+from src.config.config import settings
+from src.schemas.user import UserModel
+from src.db.models import User
 
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")

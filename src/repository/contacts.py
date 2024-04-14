@@ -6,9 +6,9 @@ from sqlalchemy import select, text, extract, desc
 from sqlalchemy.orm import Session
 
 
-from config.config import settings
-from schemas.contact import ContactFavoriteModel, ContactModel
-from db.models import Contact
+from src.config.config import settings
+from src.schemas.contact import ContactFavoriteModel, ContactModel
+from src.db.models import Contact
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")
 

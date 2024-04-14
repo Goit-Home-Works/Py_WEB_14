@@ -5,8 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43594337-6c31-46e8-ada3-8de9d2409788" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/my_mkdocs/docs/hello.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Py_WEB_14.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Py_WEB_14.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw14_mkdocs/docs/api/index.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw14_mkdocs/docs/index.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw14_mkdocs/mkdocs.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw14_mkdocs/serve.sh" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/contacts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/contacts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/contacts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/contacts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schemas/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/contact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/cloudinary.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/cloudinary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/emails.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/emails.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unittest/repository_contacts_unit_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/unittest/repository_contacts_unit_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,16 +57,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests in reository_contacts_unit_test.py.executor": "Run",
-    "Python tests.Python tests in repository_contacts_unit_test.py.executor": "Run",
-    "Python.config.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/sergio/Desktop/Py_WEB_14/src"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests in parameterized_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in reository_contacts_unit_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in repository_contacts_unit_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.conftest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/sergio/Desktop/Py_WEB_14/src&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
@@ -55,6 +78,28 @@
       <recent name="$PROJECT_DIR$/src/database" />
       <recent name="$PROJECT_DIR$" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Python tests in parameterized_test.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="Py_WEB_14" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/unittest" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/unittest/parameterized_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Python tests in parameterized_test.py" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

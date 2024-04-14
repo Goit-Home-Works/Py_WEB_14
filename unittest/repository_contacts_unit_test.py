@@ -1,4 +1,7 @@
 from datetime import date, timedelta
+import logging
+import colorlog
+import functools
 import sys
 import os
 import unittest
@@ -8,12 +11,14 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 from sqlalchemy import select, text, extract, desc
 
+RED = "\033[91m"
+GREEN = "\033[92m"
+BLUE = "\033[94m"
+RESET = "\033[0m"
+
 hw_path: str = str(Path(__file__).resolve().parent.parent.joinpath("src"))
 sys.path.append(hw_path)
 print(f"{hw_path=}", sys.path)
-os.environ["PYTHONPATH"] += os.pathsep + hw_path
-print(f'{os.environ["PYTHONPATH"]=}')
-
 
 from src.db.models import User, Contact
 from src.schemas.contact import ContactModel, ContactFavoriteModel
@@ -28,13 +33,48 @@ from src.repository.contacts import (
     favorite_update,
     search_birthday,
 )
+from src.config.config import settings
 
+# Set up logging configuration
+logger = logging.getLogger(f"{settings.app_name}")
+logger.setLevel(logging.INFO)
+
+# Set up custom formatter for success and failure messages
+formatter = colorlog.ColoredFormatter(
+    "%(yellow)s%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt=None,
+    reset=True,
+)
+
+# Add the custom formatter to a StreamHandler
+handler = colorlog.StreamHandler()
+handler.setFormatter(formatter)
+
+# Add the handler to the logger
+logger.addHandler(handler)
 
 class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         self.session = MagicMock(spec=Session)
         self.user = User(id=1, email="some@email.ua")
 
+    async def log_assertion_result(self, test_name, result, expected=None):
+        if result == expected:
+            test_name = f"{BLUE}{test_name}{RESET}"
+            logger.info(f"{test_name}: {GREEN}Assertion successful.{RESET}---> Result matches expected value.")
+        else:
+            logger.error(f"{test_name}: {RED}Assertion failed.{RESET}---> Result does not match expected value.")
+
+    @staticmethod
+    def async_wrap_assertion_result(func):
+        @functools.wraps(func)
+        async def wrapper(self, *args, **kwargs):
+            result = await func(self, *args, **kwargs)
+            await self.log_assertion_result(func.__name__, result, *args, **kwargs)
+            return result
+        return wrapper
+
+    @async_wrap_assertion_result
     async def test_get_contacts(self):
         contacts = [Contact(), Contact(), Contact()]
         favorite = True
@@ -44,29 +84,35 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         q.offset().limit().all.return_value = contacts
         result = await get_contacts(skip=0, limit=10, user_id=self.user.id, favorite=favorite, db=self.session)  # type: ignore
         self.assertEqual(result, contacts)
+        await self.log_assertion_result("test_get_contacts", result, contacts)
 
+    @async_wrap_assertion_result
     async def test_get_contact_found_by_id(self):
         contact = Contact()
         self.session.query().filter_by().first.return_value = contact
         result = await get_contact_by_id(contact_id=1, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertEqual(result, contact)
 
+    @async_wrap_assertion_result
     async def test_get_contact_found_by_email(self):
         contact = Contact()
         self.session.query().filter_by().first.return_value = contact
         result = await get_contact_by_email(email="as@ee.ua", user_id=self.user.id, db=self.session)  # type: ignore
         self.assertEqual(result, contact)
 
+    @async_wrap_assertion_result
     async def test_get_contact_not_found_by_id(self):
         self.session.query().filter_by().first.return_value = None
         result = await get_contact_by_id(contact_id=1, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertIsNone(result)
 
+    @async_wrap_assertion_result
     async def test_get_contact_not_found_by_email(self):
         self.session.query().filter_by().first.return_value = None
         result = await get_contact_by_email(email="as@ee.ua", user_id=self.user.id, db=self.session)  # type: ignore
         self.assertIsNone(result)
 
+    @async_wrap_assertion_result
     async def test_create_contact(self):
         body = ContactModel(
             first_name="test1",
@@ -82,17 +128,20 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(hasattr(result, "id"))
         self.assertEqual(result.user_id, self.user.id)
 
+    @async_wrap_assertion_result
     async def test_remove_contact_found(self):
         contact = Contact()
         self.session.query().filter_by().first.return_value = contact
         result = await delete(contact_id=1, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertEqual(result, contact)
 
+    @async_wrap_assertion_result
     async def test_remove_contact_not_found(self):
         self.session.query().filter_by().first.return_value = None
         result = await delete(contact_id=1, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertIsNone(result)
 
+    @async_wrap_assertion_result
     async def test_update_contact_found(self):
         contact = Contact()
         body = ContactModel(
@@ -106,6 +155,7 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         result = await update(contact_id=1, body=body, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertEqual(result, contact)
 
+    @async_wrap_assertion_result
     async def test_update_contact_not_found(self):
         body = ContactModel(
             first_name="test1-1",
@@ -118,6 +168,7 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         result = await update(contact_id=1, body=body, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertIsNone(result)
 
+    @async_wrap_assertion_result
     async def test_update_favorite_contact_found(self):
         body = ContactFavoriteModel(favorite=True)
         contact = Contact()
@@ -125,6 +176,7 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         result = await favorite_update(contact_id=1, body=body, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertEqual(result, contact)
 
+    @async_wrap_assertion_result
     async def test_update_favorite_contact_not_found(self):
         body = ContactFavoriteModel(favorite=True)
         contact = Contact()
@@ -132,6 +184,7 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         result = await favorite_update(contact_id=1, body=body, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertIsNone(result)
 
+    @async_wrap_assertion_result
     async def test_get_contact_search_birthday(self):
         date_now = date.today()
         bd1 = date_now.replace(year=1990) + timedelta(days=2)
@@ -150,6 +203,7 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         result = await search_birthday(param=param, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertEqual(result, contacts[:-1])
 
+    @async_wrap_assertion_result
     async def test_get_contact_search_birthday_leap(self):
         date_now = date.today()
         bd1 = date(1988, 2, 29)

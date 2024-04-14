@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 import redis.asyncio as redis
 
-from config.config import settings
+from src.config.config import settings
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")
 
