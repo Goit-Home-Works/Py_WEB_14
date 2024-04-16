@@ -4,8 +4,8 @@ from pathlib import Path
 from pydantic import EmailStr, BaseModel
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 
-from src.config.config import settings
-from src.services.auth import auth_service
+from config.config import settings
+from services.auth import auth_service
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")
 

@@ -5,12 +5,12 @@ from fastapi_limiter.depends import RateLimiter
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from src.config.config import settings
-from src.db.database import get_db
-from src.db.models import User
-from src.schemas.contact import ContactFavoriteModel, ContactModel, ContactResponse
-from src.repository import contacts as repository_contacts
-from src.routes import auth
+from config.config import settings
+from db.database import get_db
+from db.models import User
+from schemas.contact import ContactFavoriteModel, ContactModel, ContactResponse
+from repository import contacts as repository_contacts
+from routes import auth
 
 
 router = APIRouter(prefix="/contacts", tags=["contacts"])

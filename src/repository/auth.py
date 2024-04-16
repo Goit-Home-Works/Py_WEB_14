@@ -2,10 +2,10 @@ import logging
 from sqlalchemy.orm import Session
 
 
-from src.config.config import settings
-from src.db.models import User
-from src.services.auth import auth_service
-from src.repository import users as repository_users
+from config.config import settings
+from db.models import User
+from services.auth import auth_service
+from repository import users as repository_users
 
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")

@@ -14,7 +14,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field, EmailStr, ConfigDict
 
 
-from src.db.models import Role
+from db.models import Role
 
 
 class UserModel(BaseModel):

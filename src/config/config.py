@@ -6,6 +6,9 @@ from pydantic import ConfigDict, BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+def get_sqlalchemy_database_url() -> str:
+    return f"postgresql+psycopg2://{environ.get('POSTGRES_USERNAME')}:{environ.get('POSTGRES_PASSWORD')}@localhost:{environ.get('POSTGRES_PORT')}/{environ.get('POSTGRES_DATABASE')}"
+
 
 BASE_PATH_PROJECT = Path(__file__).resolve().parent.parent
 print(f"{BASE_PATH_PROJECT=}")
@@ -21,18 +24,14 @@ print(f"POSTGRES_PASSWORD={environ.get('POSTGRES_PASSWORD')}")
 print(f"POSTGRES_PORT={environ.get('POSTGRES_PORT')}")
 print(f"POSTGRES_DATABASE={environ.get('POSTGRES_DATABASE')}")
 
+
 class Settings(BaseSettings):
-    # model_config = SettingsConfigDict(
-    #     extra="ignore",
-    #     env_file=BASE_PATH.joinpath(f".env-{APP_ENV}") if APP_ENV else BASE_PATH.joinpath(".env"),
-    #     env_file_encoding="utf-8",
-    # )
     app_mode: str = "prod"
     app_version: str = "hw"
     app_name: str = "contacts"
     app_host: str = "0.0.0.0"
     app_port: int = 9000
-    sqlalchemy_database_url: str = ""
+    sqlalchemy_database_url: str = get_sqlalchemy_database_url()
     token_secret_key: str = "some_SuPeR_key"
     token_algorithm: str = "HS256"
     mail_username: str = "user@example.com"
@@ -51,7 +50,6 @@ class Settings(BaseSettings):
     reate_limiter_seconds: int = 5
     SPHINX_DIRECTORY: str = str(BASE_PATH.joinpath("docs", "_build", "html"))
     STATIC_DIRECTORY: str = str(BASE_PATH_PROJECT.joinpath("static"))
-
     sendgrid_api_key: str = ""
 
     @classmethod
@@ -60,16 +58,11 @@ class Settings(BaseSettings):
 
     class Config:
         extra = "ignore"
-        env_file = BASE_PATH.joinpath(f".env-{APP_ENV}") if APP_ENV else BASE_PATH.joinpath(".env")
+        env_file = BASE_PATH.joinpath(".env")
         env_file_encoding = "utf-8"
 
-    @property
-    def sqlalchemy_database_url(self) -> str:
-        return f"postgresql+psycopg2://{environ.get('POSTGRES_USERNAME')}:{environ.get('POSTGRES_PASSWORD')}@localhost:{environ.get('POSTGRES_PORT')}/{environ.get('POSTGRES_DATABASE')}"
 
 settings = Settings()
-
-
 
 if __name__ == "__main__":
     print(f"{settings.Config.env_file=}")

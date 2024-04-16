@@ -18,15 +18,15 @@ from fastapi.security import (
 )
 from sqlalchemy.orm import Session
 
-from src.config.config import settings
-from src.db.database import get_db, get_redis
-from src.db.models import User
-from src.schemas.user import UserResponse, UserModel, UserDetailResponse
-from src.schemas.auth import RequestEmail
-from src.repository import auth as repository_auth
-from src.repository import users as repository_users
-from src.services.auth import auth_service
-from src.services.emails import send_email
+from config.config import settings
+from db.database import get_db, get_redis
+from db.models import User
+from schemas.user import UserResponse, UserModel, UserDetailResponse
+from schemas.auth import RequestEmail
+from repository import auth as repository_auth
+from repository import users as repository_users
+from services.auth import auth_service
+from services.emails import send_email
 
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")
 

@@ -4,7 +4,7 @@ import cloudinary
 import cloudinary.uploader
 
 
-from src.config.config import settings
+from config.config import settings
 
 
 class Cloudinary:
