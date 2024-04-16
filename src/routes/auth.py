@@ -75,7 +75,7 @@ async def login(
     if user is None:
         exception_data = {
             "status_code": status.HTTP_401_UNAUTHORIZED,
-            "detail": "Invalid credentianal",
+            "detail": "Invalid credentials",
         }
         raise HTTPException(**exception_data)
     if not bool(user.confirmed):
@@ -89,7 +89,7 @@ async def login(
     if token is None:
         exception_data = {
             "status_code": status.HTTP_401_UNAUTHORIZED,
-            "detail": "Invalid credentianal",
+            "detail": "Invalid credentials",
         }
         if SET_COOKIES:
             response.delete_cookie(key="access_token", httponly=True, path="/api/")

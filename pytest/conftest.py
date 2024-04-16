@@ -8,9 +8,10 @@ from fastapi.testclient import TestClient
 from fastapi_limiter.depends import RateLimiter
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import httpx
 
 curr_path = Path(__file__).resolve().parent
-hw_path: str = str(curr_path.parent)
+hw_path: str = str(curr_path.parent.joinpath("src"))
 
 sys.path.append(hw_path)
 print(f"{hw_path=}", sys.path)
@@ -57,7 +58,8 @@ def client(session):
 
     # Dependency override
 
-    class Empty: ...
+    class Empty:
+        ...
 
     def override_get_db():
         try:
@@ -70,7 +72,7 @@ def client(session):
 
     async def override_get_redis():
         return None
-
+    
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_redis] = override_get_redis
 
@@ -79,7 +81,6 @@ def client(session):
 
 @pytest.fixture(scope="module")
 def user():
-
     return {
         "username": "Monea",
         "email": "monea@example.com",
