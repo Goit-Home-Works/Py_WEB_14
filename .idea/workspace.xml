@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43594337-6c31-46e8-ada3-8de9d2409788" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="43594337-6c31-46e8-ada3-8de9d2409788" name="Changes" comment="readme">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytest/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest/test.sqlite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest/test_contacts_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytest/test_contacts_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest/test_users_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytest/test_users_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/contacts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/contacts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unittest/repository_contacts_unit_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/unittest/repository_contacts_unit_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,12 +45,13 @@
     "Python tests.Python tests in parameterized_test.py.executor": "Run",
     "Python tests.Python tests in reository_contacts_unit_test.py.executor": "Run",
     "Python tests.Python tests in repository_contacts_unit_test.py.executor": "Run",
+    "Python tests.pytest in repository_contacts_unit_test.py.executor": "Run",
     "Python.config.executor": "Run",
     "Python.conftest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/sergio/Desktop/Py_WEB_14/src",
-    "settings.editor.selected.configurable": "com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable"
+    "last_opened_file_path": "/home/sergio/Desktop/goitWeb/m_14_test/example_1",
+    "settings.editor.selected.configurable": "preferences.editor"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -105,6 +102,20 @@
       <option name="presentableId" value="Default" />
       <updated>1712956291422</updated>
     </task>
+    <task id="LOCAL-00001" summary="readme">
+      <option name="closed" value="true" />
+      <created>1713369012647</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713369012647</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="pytest" />
+    <MESSAGE value="readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="readme" />
   </component>
 </project>
