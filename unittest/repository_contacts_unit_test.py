@@ -18,12 +18,12 @@ RESET = "\033[0m"
 
 hw_path: str = str(Path(__file__).resolve().parent.parent.joinpath("src"))
 sys.path.append(hw_path)
-print(f"{hw_path=}", sys.path)
+# print(f"{hw_path=}", sys.path)
 
-from src.db.models import User, Contact
-from src.schemas.contact import ContactModel, ContactFavoriteModel
+from db.models import User, Contact
+from schemas.contact import ContactModel, ContactFavoriteModel
 
-from src.repository.contacts import (
+from repository.contacts import (
     get_contacts,
     get_contact_by_id,
     get_contact_by_email,
@@ -33,7 +33,7 @@ from src.repository.contacts import (
     favorite_update,
     search_birthday,
 )
-from src.config.config import settings
+from config.config import settings
 
 # Set up logging configuration
 logger = logging.getLogger(f"{settings.app_name}")
@@ -41,7 +41,7 @@ logger.setLevel(logging.INFO)
 
 # Set up custom formatter for success and failure messages
 formatter = colorlog.ColoredFormatter(
-    "%(yellow)s%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "%(yellow)s - %(name)s - %(levelname)s - %(message)s",
     datefmt=None,
     reset=True,
 )
@@ -59,11 +59,19 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         self.user = User(id=1, email="some@email.ua")
 
     async def log_assertion_result(self, test_name, result, expected=None):
+        # Extract only the function name from the fully qualified test name
+        test_name_parts = test_name.split("::")  # Split by '::'
+        if len(test_name_parts) > 1:
+            test_name = test_name_parts[-1]  # Take the last part
         if result == expected:
             test_name = f"{BLUE}{test_name}{RESET}"
-            logger.info(f"{test_name}: {GREEN}Assertion successful.{RESET}---> Result matches expected value.")
+            logger.info(
+                f"{test_name}: {GREEN}Assertion successful.---> Result matches expected value.{RESET}"
+            )
         else:
-            logger.error(f"{test_name}: {RED}Assertion failed.{RESET}---> Result does not match expected value.")
+            logger.error(
+                f"{test_name}: {RED}Assertion failed.---> Result does not match expected value.{RESET}"
+            )
 
     @staticmethod
     def async_wrap_assertion_result(func):
@@ -84,7 +92,6 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         q.offset().limit().all.return_value = contacts
         result = await get_contacts(skip=0, limit=10, user_id=self.user.id, favorite=favorite, db=self.session)  # type: ignore
         self.assertEqual(result, contacts)
-        await self.log_assertion_result("test_get_contacts", result, contacts)
 
     @async_wrap_assertion_result
     async def test_get_contact_found_by_id(self):
@@ -179,7 +186,6 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
     @async_wrap_assertion_result
     async def test_update_favorite_contact_not_found(self):
         body = ContactFavoriteModel(favorite=True)
-        contact = Contact()
         self.session.query().filter_by().first.return_value = None
         result = await favorite_update(contact_id=1, body=body, user_id=self.user.id, db=self.session)  # type: ignore
         self.assertIsNone(result)
@@ -208,7 +214,7 @@ class TestContactsRepository(unittest.IsolatedAsyncioTestCase):
         date_now = date.today()
         bd1 = date(1988, 2, 29)
         contacts = [Contact(birthday=bd1)]
-        param = {"days": 7, "skip": 0, "limit": 10, "fixed_now": date(2023, 2, 27)}
+        param = {"days": 7, "skip": 0, "limit": 10, "fixed_now": date(2024, 2, 27)}
         query = select().where().order_by()
         self.session.execute(query).scalars.return_value = contacts
         result = await search_birthday(param=param, user_id=self.user.id, db=self.session)  # type: ignore

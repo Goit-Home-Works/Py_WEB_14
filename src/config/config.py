@@ -11,18 +11,18 @@ def get_sqlalchemy_database_url() -> str:
 
 
 BASE_PATH_PROJECT = Path(__file__).resolve().parent.parent
-print(f"{BASE_PATH_PROJECT=}")
+# print(f"{BASE_PATH_PROJECT=}")
 BASE_PATH = BASE_PATH_PROJECT.parent
-print(f"{BASE_PATH=}")
+# print(f"{BASE_PATH=}")
 load_dotenv(BASE_PATH.joinpath(".env"))
 APP_ENV = environ.get("APP_ENV")
-print(f"{APP_ENV=}")
+# print(f"{APP_ENV=}")
 
-# Debugging: Print the values of the environment variables
-print(f"POSTGRES_USERNAME={environ.get('POSTGRES_USERNAME')}")
-print(f"POSTGRES_PASSWORD={environ.get('POSTGRES_PASSWORD')}")
-print(f"POSTGRES_PORT={environ.get('POSTGRES_PORT')}")
-print(f"POSTGRES_DATABASE={environ.get('POSTGRES_DATABASE')}")
+# Debugging:
+# print(f"POSTGRES_USERNAME={environ.get('POSTGRES_USERNAME')}")
+# print(f"POSTGRES_PASSWORD={environ.get('POSTGRES_PASSWORD')}")
+# print(f"POSTGRES_PORT={environ.get('POSTGRES_PORT')}")
+# print(f"POSTGRES_DATABASE={environ.get('POSTGRES_DATABASE')}")
 
 
 class Settings(BaseSettings):

@@ -208,7 +208,7 @@ def date_replace_year(d: date, year: int) -> date:
     except ValueError as err:
         logger.debug(f"date_replace_year b:  {d}")
         d = d + timedelta(days=1)  # 29.02.1988 -> 01.03.1988
-        d = d.replace(year=year)  # 01.03.1988 -> 01.03.2023
+        d = d.replace(year=year)  # 01.03.1988 -> 01.03.2024
         logger.debug(f"date_replace_year a:  {d}")
     return d
 
@@ -238,8 +238,6 @@ async def search_birthday(param: dict, user_id: int, db: Session) -> List[Contac
     days: int = int(param.get("days", 7)) + 1
     # days = 67
     date_now = param.get("fixed_now",  date.today())
-    # date_now = date.today()
-    # date_now = date(2023, 2, 25)
     date_now_year = date_now.year
     date_now_month = date_now.month
     date_last_month = (date_now + timedelta(days=days + 1)).month
