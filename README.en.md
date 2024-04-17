@@ -14,3 +14,32 @@ In this task, we continue to refine our REST API application from home [task 13]
 
 4. Cover your homework with tests more than 95%. Use the `pytest-cov' package to check.
    
+
+## Execution
+Before running the script, remember to set your SendGrid API key in the SENDGRID_API_KEY environment variable. If you're using a Unix-like system, you can set it like this:
+
+```bash
+echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
+echo "sendgrid.env" >> .gitignore
+source ./sendgrid.env
+```
+Replace 'YOUR_API_KEY' with your actual SendGrid API key.
+
+To run the program, copy and paste the following command into the terminal:
+
+```bash
+python3 src/main.py
+```
+1. Click on Sphinx DOC.
+
+2. To run unittest, copy and paste the following command into the terminal:
+```
+python3 unittest/repository_contacts_unit_test.py
+```
+
+3.To run pytest-cov, copy and paste the following command into the terminal:
+
+
+```
+pytest -v -p no:warnings --cov=. --cov-report term pytest/
+```
