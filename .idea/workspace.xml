@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="43594337-6c31-46e8-ada3-8de9d2409788" name="Changes" comment="copiright">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/contacts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/contacts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unittest/repository_contacts_unit_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/unittest/repository_contacts_unit_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pytest/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytest/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pytest/test.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/pytest/test.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,20 +40,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests in parameterized_test.py.executor": "Run",
-    "Python tests.Python tests in reository_contacts_unit_test.py.executor": "Run",
-    "Python tests.Python tests in repository_contacts_unit_test.py.executor": "Run",
-    "Python tests.pytest in repository_contacts_unit_test.py.executor": "Run",
-    "Python.config.executor": "Run",
-    "Python.conftest.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/sergio/Desktop/goitWeb/m_14_test/example_1",
-    "settings.editor.selected.configurable": "preferences.editor"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests in parameterized_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in reository_contacts_unit_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in repository_contacts_unit_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest in repository_contacts_unit_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.conftest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/sergio/Desktop/goitWeb/m_14_test/example_1&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />

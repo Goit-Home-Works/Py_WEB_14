@@ -14,7 +14,8 @@ curr_path = Path(__file__).resolve().parent
 hw_path: str = str(curr_path.parent.joinpath("src"))
 
 sys.path.append(hw_path)
-print(f"{hw_path=}", sys.path)
+# print(f"{hw_path=}", sys.path)
+# print(f"{curr_path=}")
 
 from src.main import app, get_limit
 from src.db.models import Base
@@ -48,18 +49,13 @@ def mock_ratelimiter(monkeypatch):
     mock_rate_limiter = AsyncMock()
     monkeypatch.setattr("fastapi_limiter.FastAPILimiter.redis", mock_rate_limiter)
     monkeypatch.setattr("fastapi_limiter.FastAPILimiter.identifier", mock_rate_limiter)
-    monkeypatch.setattr(
-        "fastapi_limiter.FastAPILimiter.http_callback", mock_rate_limiter
-    )
+    monkeypatch.setattr("fastapi_limiter.FastAPILimiter.http_callback", mock_rate_limiter)
 
 
 @pytest.fixture(scope="module")
 def client(session):
 
     # Dependency override
-
-    class Empty:
-        ...
 
     def override_get_db():
         try:

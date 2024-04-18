@@ -11,7 +11,7 @@ from config.config import settings
 logger = logging.getLogger(f"{settings.app_name}.{__name__}")
 
 URI = settings.sqlalchemy_database_url
-print(f"Database {URI=}")
+# print(f"Database {URI=}")
 SQLALCHEMY_DATABASE_URL = URI
 
 assert SQLALCHEMY_DATABASE_URL is not None, "SQLALCHEMY_DATABASE_URL UNDEFINED"

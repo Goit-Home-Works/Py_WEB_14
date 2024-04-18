@@ -42,5 +42,10 @@ python3 unittest/repository_contacts_unit_test.py
 
 
 ```
+poetry run pytest -v -p no:warnings --cov=. --cov-report term pytest/
+```
+or
+
+```
 pytest -v -p no:warnings --cov=. --cov-report term pytest/
 ```

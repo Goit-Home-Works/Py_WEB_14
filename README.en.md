@@ -40,6 +40,13 @@ python3 unittest/repository_contacts_unit_test.py
 3.To run pytest-cov, copy and paste the following command into the terminal:
 
 
+
+
+```
+poetry run pytest -v -p no:warnings --cov=. --cov-report term pytest/
+```
+or
+
 ```
 pytest -v -p no:warnings --cov=. --cov-report term pytest/
 ```
