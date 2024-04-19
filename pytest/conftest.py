@@ -18,7 +18,7 @@ sys.path.append(hw_path)
 # print(f"{curr_path=}")
 
 from src.main import app, get_limit
-from src.db.models import Base
+from src.db.models import Base, User
 from src.db.database import get_db, get_redis
 
 db_path = curr_path / "test.sqlite"
@@ -27,7 +27,7 @@ SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path}"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 
 
 @pytest.fixture(scope="module")
@@ -60,6 +60,9 @@ def client(session):
     def override_get_db():
         try:
             yield session
+        except Exception as err:
+            print(err)
+            session.rollback()
         finally:
             session.close()
 
@@ -68,7 +71,7 @@ def client(session):
 
     async def override_get_redis():
         return None
-    
+
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_redis] = override_get_redis
 
@@ -84,6 +87,15 @@ def user():
         "avatar": None,
         "role": "user",
     }
+
+
+@pytest.fixture
+def mock_user(session, user):
+    # Create a mock user in the database using data from the user fixture
+    user_obj = User(**user)
+    session.add(user_obj)
+    session.commit()
+    return user_obj
 
 
 @pytest.fixture(scope="module")
