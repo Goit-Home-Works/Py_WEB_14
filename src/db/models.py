@@ -2,32 +2,32 @@
 This module defines SQLAlchemy models for managing contacts and users in a database.
 
 Contact:
-- Represents a contact with attributes like first name, last name, email, phone, birthday, comments, etc.
-- Attributes:
-    - id: Primary key of the contact.
-    - first_name: First name of the contact.
-    - last_name: Last name of the contact.
-    - email: Email address of the contact.
-    - phone: Phone number of the contact.
-    - birthday: Birthday of the contact.
-    - comments: Additional comments about the contact.
-    - favorite: Indicates whether the contact is marked as favorite.
-    - created_at: Timestamp indicating when the contact was created.
-    - updated_at: Timestamp indicating when the contact was last updated.
-    - user_id: Foreign key referencing the user who owns the contact.
-    - user: Relationship to the User model representing the owner of the contact.
+    - Represents a contact with attributes like first name, last name, email, phone, birthday, comments, etc.
+        - Attributes:
+            - id: Primary key of the contact.
+            - first_name: First name of the contact.
+            - last_name: Last name of the contact.
+            - email: Email address of the contact.
+            - phone: Phone number of the contact.
+            - birthday: Birthday of the contact.
+            - comments: Additional comments about the contact.
+            - favorite: Indicates whether the contact is marked as favorite.
+            - created_at: Timestamp indicating when the contact was created.
+            - updated_at: Timestamp indicating when the contact was last updated.
+            - user_id: Foreign key referencing the user who owns the contact.
+            - user: Relationship to the User model representing the owner of the contact.
 
 User:
-- Represents a user with attributes like username, email, password, role, etc.
-- Attributes:
-    - id: Primary key of the user.
-    - username: Username of the user.
-    - email: Email address of the user.
-    - password: Password of the user.
-    - refresh_token: Refresh token for the user's session (optional).
-    - avatar: URL of the user's avatar image (optional).
-    - role: Role of the user, which is an Enum with possible values 'admin', 'moderator', or 'user'.
-    - confirmed: Indicates whether the user's email address is confirmed.
+    - Represents a user with attributes like username, email, password, role, etc.
+        - Attributes:
+            - id: Primary key of the user.
+            - username: Username of the user.
+            - email: Email address of the user.
+            - password: Password of the user.
+            - refresh_token: Refresh token for the user's session (optional).
+            - avatar: URL of the user's avatar image (optional).
+            - role: Role of the user, which is an Enum with possible values 'admin', 'moderator', or 'user'.
+            - confirmed: Indicates whether the user's email address is confirmed.
 
 Role:
 - Enum representing user roles with values 'admin', 'moderator', and 'user'.

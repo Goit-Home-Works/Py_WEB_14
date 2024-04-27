@@ -19,6 +19,7 @@ docs_path = os.path.abspath('./')
 src_path = os.path.abspath('../src')
 print(f"{docs_path=} {src_path=}")
 sys.path.insert(0, os.path.abspath('../src'))
+sys.path.insert(0, os.path.abspath('../src/repository'))
 # -- Project information -----------------------------------------------------
 
 project = 'Rest API'
@@ -57,4 +58,4 @@ html_theme = 'classic'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['../src/static']
